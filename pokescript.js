@@ -42,8 +42,9 @@ const POKEMON = {
     lastPKMGeneration: [151, 251, 386, 493, 649, 721, 809]
 };
 const CHART = document.querySelector("#chart").getContext("2d");
-const testBox = document.querySelector(".testBox");
-var data = [];
+// const testBox = document.querySelector(".testBox");
+var numberByType = [];
+var fullPKMNData = [];
 
 let getURLs = (types) => {
     // Simply generates an array of URLS from the Pokemon types chosen 
@@ -57,17 +58,20 @@ let getURLs = (types) => {
 
 async function processURLs(allURLs) {
     // Async function to save all responses in an array
-    data = [];
+    numberByType = [];
     for (let url of allURLs) {
         let pokeRequest = await fetch(url).then(function(response) { return response.json(); });
-        data.push(pokeRequest.pokemon.length);
+        fullPKMNData.push(pokeRequest);
+        numberByType.push(pokeRequest.pokemon.length);
     }
-    // testBox.innerHTML += data; //just test 
-    return data;
+    console.log(fullPKMNData[0].pokemon[0].pokemon.url);
+    console.log(numberByType);
+    console.log(fullPKMNData.pokemon.length);
+    return numberByType;
 }
 
 let startProcess = () => {
-    processURLs(getURLs(['1', '2'])); // aquí iría la variable con los tipos de pokemon elegidos
+    processURLs(getURLs(['1', '2'])); // esto se cambiaría por todos los PKMN de golpe
 
     /*
     let pokemonCounter = 0;
@@ -75,12 +79,11 @@ let startProcess = () => {
     for (let x in pokeJSONs) {
         for (let y in pokeJSONs[x]) {
             pokeData[y] = pokeJSONs.pokemon[y].pokemon.name;
-            testBox.innerHTML += pokeData[y] + " ";
             pokemonCounter++;
         }
     }
     pokeData = pokeJSONs.pokemon;
-    testBox.innerHTML = pokemonCounter;
+    // testBox.innerHTML = pokemonCounter;
     */
 };
 
