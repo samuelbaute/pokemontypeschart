@@ -46,22 +46,23 @@ const testBox = document.querySelector(".testBox");
 var data = [];
 
 let getURLs = (types) => {
+    // Simply generates an array of URLS from the Pokemon types chosen 
     let URLsList = [];
     for (var i = 1; i <= types.length; i++) {
-        // Starts with 1 because the API do so.
+        // Starts with 1 because the API starts with Pokemon type 1.
         URLsList[i - 1] = `https://pokeapi.co/api/v2/type/${i}/`;
     }
     return URLsList;
 };
 
 async function processURLs(allURLs) {
+    // Async function to save all responses in an array
     data = [];
     for (let url of allURLs) {
         let pokeRequest = await fetch(url).then(function(response) { return response.json(); });
-        //testBox.innerHTML += JSON.stringify(pokeRequest.pokemon.length) + ' ';
-        data += pokeRequest;
+        data.push(pokeRequest.pokemon.length);
     }
-    testBox.innerHTML += data[0].pokemon;
+    // testBox.innerHTML += data; //just test 
     return data;
 }
 
@@ -99,25 +100,3 @@ var myChart = new Chart(CHART, {
         }]
     }
 });
-
-
-/*
-
-fetch("https://pokeapi.co/api/v2/type/2/")
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(pokeJSON) {
-    pokeData = [""];
-    let pokemonCounter = 0;
-    for (x in pokeJSON.pokemon) {
-      pokeData[x] = pokeJSON.pokemon[x].pokemon.name;
-      testBox.innerHTML += pokeData[x] + " ";
-      pokemonCounter++;
-    }
-    pokeData = pokeJSON.pokemon;
-    testBox.innerHTML = pokemonCounter;
-    console.log(pokeData);
-  });
-
-*/
