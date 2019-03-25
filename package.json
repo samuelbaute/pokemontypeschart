@@ -1,0 +1,14 @@
+{
+    "name": "pokemontypes",
+    "version": "1.0.0",
+    "description": "pokemon types chart",
+    "main": "pokerscript.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Samuel Baute",
+    "license": "ISC",
+    "devDependencies": {
+        "eslint": "^5.15.3"
+    }
+}
