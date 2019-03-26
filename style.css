@@ -1,3 +1,8 @@
-.loading{
-  background-color: rgba(255,0,0,0.01);
+.loading {
+    background-color: rgba(255, 0, 0, 0.01);
+}
+
+.generations label,
+.generations input {
+    margin: 10px;
 }

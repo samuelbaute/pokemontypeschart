@@ -42,11 +42,54 @@ const POKEMON = {
     lastPKMGeneration: [151, 251, 386, 493, 649, 721, 809]
 };
 const CHART = document.querySelector("#chart").getContext("2d");
-// const testBox = document.querySelector(".testBox");
+const GENERATIONS = document.querySelector('.generations');
 var numberByType = [];
 var fullPKMNData = [];
 
-let getURLs = (types) => {
+let startApp = () => {
+
+    for (let x = 0; x < POKEMON.lastPKMGeneration.length; x++) {
+        GENERATIONS.appendChild(createGenCheck(x + 1)); //PKMN starts in Gen 1
+    }
+    startProcess();
+
+    /*
+    let pokemonCounter = 0;
+    // Este for lo editaré cuando haya que elegir pokemon por generación
+    for (let x in pokeJSONs) {
+        for (let y in pokeJSONs[x]) {
+            pokeData[y] = pokeJSONs.pokemon[y].pokemon.name;
+            pokemonCounter++;
+        }
+    }
+    pokeData = pokeJSONs.pokemon;
+    // testBox.innerHTML = pokemonCounter;
+    */
+    updateApp();
+};
+
+const createGenCheck = (id) => {
+    let label = document.createElement('label');
+    label.class = 'checkbox';
+    let checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.name = 'pokemon';
+    checkbox.id = id;
+    checkbox.checked = true;
+    checkbox.value = label.innerHTML = `Gen ${id}`;
+    label.appendChild(checkbox);
+    return label;
+}
+
+const updateApp = () => {
+    return 1;
+};
+
+const startProcess = () => {
+    processURLs(getURLs(['1', '2'])); // esto se cambiaría por todos los PKMN de golpe
+};
+
+const getURLs = (types) => {
     // Simply generates an array of URLS from the Pokemon types chosen 
     let URLsList = [];
     for (var i = 1; i <= types.length; i++) {
@@ -66,29 +109,10 @@ async function processURLs(allURLs) {
     }
     console.log(fullPKMNData[0].pokemon[0].pokemon.url);
     console.log(numberByType);
-    console.log(fullPKMNData.pokemon.length);
     return numberByType;
 }
 
-let startProcess = () => {
-    processURLs(getURLs(['1', '2'])); // esto se cambiaría por todos los PKMN de golpe
-
-    /*
-    let pokemonCounter = 0;
-    // Este for lo editaré cuando haya que elegir pokemon por generación
-    for (let x in pokeJSONs) {
-        for (let y in pokeJSONs[x]) {
-            pokeData[y] = pokeJSONs.pokemon[y].pokemon.name;
-            pokemonCounter++;
-        }
-    }
-    pokeData = pokeJSONs.pokemon;
-    // testBox.innerHTML = pokemonCounter;
-    */
-};
-
-startProcess();
-
+startApp();
 
 // eslint-disable-next-line
 var myChart = new Chart(CHART, {
