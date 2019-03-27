@@ -70,17 +70,27 @@ let startApp = () => {
 
 const createGenCheck = (id) => {
     let label = document.createElement('label');
-    label.class = 'checkbox';
     let checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.name = 'pokemon';
     checkbox.className = 'nes-checkbox';
     checkbox.id = id;
-    checkbox.checked = true;
     checkbox.value = `Gen ${id}`;
     label.appendChild(checkbox);
     label.innerHTML += `<span>Gen ${id}</span>`;
+    label.click();
+    label.addEventListener("click", toggleCheckbox);
     return label;
+};
+
+function toggleCheckbox(){
+    let checkboxesChecked = document.querySelectorAll(".nes-checkbox");
+    let counter = 0;
+    console.log('Checked generations:');
+    checkboxesChecked.forEach(function(element){
+        if (element.checked)
+            console.log(element.id);
+    });
 }
 
 const updateApp = () => {
@@ -101,9 +111,10 @@ const getURLs = (types) => {
     return URLsList;
 };
 
-async function processURLs(allURLs) {
+async function processURLs(allURLs, conditions) {
     // Async function to save all responses in an array
     numberByType = [];
+    conditions = 0; // estas van a ser las condiciones a meter para saber
     for (let url of allURLs) {
         let pokeRequest = await fetch(url).then(function(response) { return response.json(); });
         fullPKMNData.push(pokeRequest);
@@ -116,7 +127,6 @@ async function processURLs(allURLs) {
 
 startApp();
 
-// eslint-disable-next-line
 let myChart = new Chart(CHART, {
     type: "bar",
     data: {
