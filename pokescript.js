@@ -74,10 +74,12 @@ const createGenCheck = (id) => {
     let checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.name = 'pokemon';
+    checkbox.className = 'nes-checkbox';
     checkbox.id = id;
     checkbox.checked = true;
-    checkbox.value = label.innerHTML = `Gen ${id}`;
+    checkbox.value = `Gen ${id}`;
     label.appendChild(checkbox);
+    label.innerHTML += `<span>Gen ${id}</span>`;
     return label;
 }
 
@@ -115,7 +117,7 @@ async function processURLs(allURLs) {
 startApp();
 
 // eslint-disable-next-line
-var myChart = new Chart(CHART, {
+let myChart = new Chart(CHART, {
     type: "bar",
     data: {
         labels: POKEMON.types,
@@ -125,5 +127,6 @@ var myChart = new Chart(CHART, {
             backgroundColor: POKEMON.typeColors,
             borderWidth: 0
         }]
-    }
+    },
+    options: {}
 });
