@@ -1,3 +1,15 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pokedex{
+    height: 400px;
+    width: 900px;
+    margin: 30px auto;
+}
+
 .loading {
     background-color: rgba(255, 0, 0, 0.01);
 }

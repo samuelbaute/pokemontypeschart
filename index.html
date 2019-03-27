@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css">
@@ -15,16 +13,17 @@
 </head>
 
 <body>
-    <div class='section container'>
-
-        <h1 class='title'>Pokémon Types</h1>
-        <h3 class='subtitle'>The chart.</h3>
-        <form class="generations">
-            <!-- Blank on purpose for JS population -->
-        </form>
-        <div class="chartPlaceHolder container">
-            <canvas id="chart"></canvas>
-            <div class='is-overlay loading'></div>
+    <div class='container'>
+        <div class='pokedex'>
+            <h1 class='title'>Pokémon Types</h1>
+            <h3 class='subtitle'>The chart.</h3>
+            <form class="generations">
+                <!-- Blank on purpose for JS population -->
+            </form>
+            <div class="chartPlaceHolder container">
+                <canvas id="chart"></canvas>
+                <div class='is-overlay loading'></div>
+            </div>
         </div>
     </div>
     <script src="./pokescript.js"></script>

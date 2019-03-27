@@ -39,66 +39,33 @@ const POKEMON = {
         "#B7B7CE",
         "#D685AD"
     ],
-    lastPKMGeneration: [151, 251, 386, 493, 649, 721, 809]
+    generationsTop: [151, 251, 386, 493, 649, 721, 809]
 };
 const CHART = document.querySelector("#chart").getContext("2d");
 const GENERATIONS = document.querySelector('.generations');
-var numberByType = [];
-var fullPKMNData = [];
+let activeGenerations = []; // array of true/false to know which pokemons to store & show
+let numberByType = []; // array of all pokemon number by types, according to the activeGenerations and ordered by POKEMON.generationsTop
+let fullPKMNData = []; // array of pokeAPI JSON (objects)
 
-let startApp = () => {
-
-    for (let x = 0; x < POKEMON.lastPKMGeneration.length; x++) {
+const createHTML = () => {
+    const createGenCheck = (id) => {
+        // Create the checkboxes
+        let label = document.createElement('label');
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'pokemon';
+        checkbox.className = 'nes-checkbox';
+        checkbox.id = id;
+        checkbox.value = `Gen ${id}`;
+        label.appendChild(checkbox);
+        label.innerHTML += `<span>Gen ${id}</span>`;
+        if (id === 1) label.click();
+        label.addEventListener("click", appUpdate);
+        return label;
+    };
+    for (let x = 0; x < POKEMON.generationsTop.length; x++) {
         GENERATIONS.appendChild(createGenCheck(x + 1)); //PKMN starts in Gen 1
     }
-    startProcess();
-
-    /*
-    let pokemonCounter = 0;
-    // Este for lo editaré cuando haya que elegir pokemon por generación
-    for (let x in pokeJSONs) {
-        for (let y in pokeJSONs[x]) {
-            pokeData[y] = pokeJSONs.pokemon[y].pokemon.name;
-            pokemonCounter++;
-        }
-    }
-    pokeData = pokeJSONs.pokemon;
-    // testBox.innerHTML = pokemonCounter;
-    */
-    updateApp();
-};
-
-const createGenCheck = (id) => {
-    let label = document.createElement('label');
-    let checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.name = 'pokemon';
-    checkbox.className = 'nes-checkbox';
-    checkbox.id = id;
-    checkbox.value = `Gen ${id}`;
-    label.appendChild(checkbox);
-    label.innerHTML += `<span>Gen ${id}</span>`;
-    label.click();
-    label.addEventListener("click", toggleCheckbox);
-    return label;
-};
-
-function toggleCheckbox(){
-    let checkboxesChecked = document.querySelectorAll(".nes-checkbox");
-    let counter = 0;
-    console.log('Checked generations:');
-    checkboxesChecked.forEach(function(element){
-        if (element.checked)
-            console.log(element.id);
-    });
-}
-
-const updateApp = () => {
-    return 1;
-};
-
-const startProcess = () => {
-    processURLs(getURLs(['1', '2'])); // esto se cambiaría por todos los PKMN de golpe
 };
 
 const getURLs = (types) => {
@@ -111,23 +78,51 @@ const getURLs = (types) => {
     return URLsList;
 };
 
-async function processURLs(allURLs, conditions) {
+const processURLs = async allURLs => {
     // Async function to save all responses in an array
-    numberByType = [];
-    conditions = 0; // estas van a ser las condiciones a meter para saber
     for (let url of allURLs) {
         let pokeRequest = await fetch(url).then(function(response) { return response.json(); });
         fullPKMNData.push(pokeRequest);
-        numberByType.push(pokeRequest.pokemon.length);
     }
-    console.log(fullPKMNData[0].pokemon[0].pokemon.url);
-    console.log(numberByType);
-    return numberByType;
-}
+};
 
-startApp();
+const processPokemon = (actGens) => {
+    for (let type = 0; type < fullPKMNData.length; type++) {
+        numberByType[type] = 0;
+        for (let x = 0; x < fullPKMNData[type].pokemon.length; x++) {
+            let pokeNumber = URL2Number(fullPKMNData[type].pokemon[x].url);
+            for (let y = 0; y < POKEMON.generationsTop.length; y++)
+                if (pokeNumber < POKEMON.generationsTop[y] && actGens[y])
+                    numberByType[type] +=1;
+        }
+    }
+};
 
+const URL2Number = (url) => {
+    // add regexp!!! -> https://docs.google.com/presentation/d/1FaDvchJD6YY0H8ar0L7g3T9mo5_AhYerKdenh4N-PJk/present?slide=id.gc547d6e1f_4_545
+    let temp = fullPKMNData[type].pokemon[x].pokemon.url.split("v2");
+    return parseInt(temp[1]; 10);
+};
+
+const startApp = () => {
+    createHTML();
+    //processURLs(getURLs(POKEMON.types));
+    processURLs(getURLs(['1','2'])); //PONEMOS ESTA TEMPORALMENTE
+
+    setTimeout(function(){
+        appUpdate();
+    }, 3000);
+};
+
+const appUpdate = () => {
+    let checkboxesChecked = document.querySelectorAll(".nes-checkbox");
+    for (let x = 0; x < checkboxesChecked.length; x++) activeGenerations[x] =  checkboxesChecked[x].checked;
+    processPokemon(activeGenerations);
+};
+
+// eslint-disable-next-line no-unused-vars,no-undef
 let myChart = new Chart(CHART, {
+    // Simpl according to Chart.js documentation
     type: "bar",
     data: {
         labels: POKEMON.types,
@@ -140,3 +135,5 @@ let myChart = new Chart(CHART, {
     },
     options: {}
 });
+
+startApp();
