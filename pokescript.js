@@ -99,7 +99,7 @@ const processPokemon = (actGens) => {
 };
 
 const URL2Number = (url) => {
-    // add regexp!!! -> https://docs.google.com/presentation/d/1FaDvchJD6YY0H8ar0L7g3T9mo5_AhYerKdenh4N-PJk/present?slide=id.gc547d6e1f_4_545
+    /// add regexp!!! -> https://docs.google.com/presentation/d/1FaDvchJD6YY0H8ar0L7g3T9mo5_AhYerKdenh4N-PJk/present?slide=id.gc547d6e1f_4_545
     let temp = fullPKMNData[type].pokemon[x].pokemon.url.split("v2");
     return parseInt(temp[1]; 10);
 };
