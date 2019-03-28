@@ -14,15 +14,21 @@
 
 <body>
     <div class='container'>
-        <div class='pokedex'>
-            <h1 class='title'>Pokémon Types</h1>
-            <h3 class='subtitle'>The chart.</h3>
-            <form class="generations">
-                <!-- Blank on purpose for JS population -->
-            </form>
-            <div class="chartPlaceHolder container">
-                <canvas id="chart"></canvas>
-                <div class='is-overlay loading'></div>
+        <div class="pokedex-body nes-container is-rounded">
+            <div class='pokedex-screen nes-container is-rounded is-dark'>
+                <h1 class='title'>Pokémon Types</h1>
+                <h3 class='subtitle'>The chart.</h3>
+                <form class="generations">
+                    <!-- Blank on purpose for JS population -->
+                </form>
+                <div class="chartPlaceHolder">
+                    <canvas id="chart"></canvas>
+                    <div id="loading">
+                        <div class="loading-info">
+                            <img src="./loading.gif" alt="Pixeled loading">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

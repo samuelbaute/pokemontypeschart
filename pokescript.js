@@ -54,7 +54,7 @@ const createHTML = () => {
         let checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.name = 'pokemon';
-        checkbox.className = 'nes-checkbox';
+        checkbox.className = 'nes-checkbox is-dark';
         checkbox.id = id;
         checkbox.value = `Gen ${id}`;
         label.appendChild(checkbox);
@@ -90,34 +90,34 @@ const processPokemon = (actGens) => {
     for (let type = 0; type < fullPKMNData.length; type++) {
         numberByType[type] = 0;
         for (let x = 0; x < fullPKMNData[type].pokemon.length; x++) {
-            let pokeNumber = URL2Number(fullPKMNData[type].pokemon[x].url);
-            for (let y = 0; y < POKEMON.generationsTop.length; y++)
-                if (pokeNumber < POKEMON.generationsTop[y] && actGens[y])
-                    numberByType[type] +=1;
+            let pokeNumber = parseInt(fullPKMNData[type].pokemon[x].pokemon.url.match(/[^(v)][0-9]+/g)[0].substring(1));
+            for (let y = 0; y < POKEMON.generationsTop.length; y++){
+                if ( (POKEMON.generationsTop[y-1]||0) < pokeNumber && pokeNumber < POKEMON.generationsTop[y]){
+                    if (actGens[y]){
+                        console.log("I'm going to add " + fullPKMNData[type].pokemon[x].pokemon.name + "which is PKMN number" + pokeNumber);
+                        numberByType[type] +=1;
+                    }
+                }
+            }
         }
     }
-};
-
-const URL2Number = (url) => {
-    /// add regexp!!! -> https://docs.google.com/presentation/d/1FaDvchJD6YY0H8ar0L7g3T9mo5_AhYerKdenh4N-PJk/present?slide=id.gc547d6e1f_4_545
-    // let temp = fullPKMNData[type].pokemon[x].pokemon.url.split("v2");
-    // return parseInt(temp[1]; 10);
-};
-
-const startApp = () => {
-    createHTML();
-    //processURLs(getURLs(POKEMON.types));
-    processURLs(getURLs(['1','2'])); //PONEMOS ESTA TEMPORALMENTE
-
-    setTimeout(function(){
-        appUpdate();
-    }, 3000);
 };
 
 const appUpdate = () => {
     let checkboxesChecked = document.querySelectorAll(".nes-checkbox");
     for (let x = 0; x < checkboxesChecked.length; x++) activeGenerations[x] =  checkboxesChecked[x].checked;
     processPokemon(activeGenerations);
+    myChart.update();
+};
+
+const startApp = () => {
+    let modal = document.querySelector("#loading").classList;
+    createHTML();
+    processURLs(getURLs(POKEMON.types.map(e => e.toLowerCase())));
+    setTimeout(function(){
+        appUpdate();
+        modal.add("is-hidden");
+    }, 8000);
 };
 
 // eslint-disable-next-line no-unused-vars,no-undef
@@ -128,7 +128,7 @@ let myChart = new Chart(CHART, {
         labels: POKEMON.types,
         datasets: [{
             label: "Number of Pokémon of that type",
-            data: [15, 20, 30, 14, 2, 13, 4, 1, 22, 12, 35, 2, 17, 20, 8, 9, 2, 3],
+            data: numberByType,
             backgroundColor: POKEMON.typeColors,
             borderWidth: 0
         }]
